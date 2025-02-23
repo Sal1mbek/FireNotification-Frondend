@@ -31,6 +31,8 @@
           />
         </div>
 
+        <p v-if="errorMessage" class="text-red-500 text-sm mb-4">{{ errorMessage }}</p>
+
         <div class="flex items-center justify-between">
           <button
               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -51,19 +53,28 @@
 </template>
 
 <script>
+import { login } from "@/services/authService";
+
 export default {
   data() {
     return {
       form: {
-        email: '',
-        password: '',
+        email: "",
+        password: "",
       },
+      errorMessage: "",
     };
   },
   methods: {
-    handleLogin() {
-      // Handle login logic here (e.g., API calls)
-      console.log('Logging in...', this.form);
+    async handleLogin() {
+      try {
+        const response = await login(this.form.email, this.form.password);
+        console.log("Login successful:", response);
+
+        this.$router.push("/"); // Redirect after successful login
+      } catch (error) {
+        this.errorMessage = error.message || "Login failed!";
+      }
     },
   },
 };
