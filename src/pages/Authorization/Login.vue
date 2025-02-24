@@ -17,35 +17,40 @@
           />
         </div>
 
-        <div class="mb-6">
+        <div class="mb-6 relative">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
             Password
           </label>
           <input
               v-model="form.password"
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pr-10"
               id="password"
-              type="password"
+              :type="showPassword ? 'text' : 'password'"
               placeholder="Enter your password"
               required
           />
+          <!-- Password Toggle Icon -->
+          <span @click="showPassword = !showPassword" class="absolute right-3 top-9 cursor-pointer text-gray-600">
+            {{ showPassword ? '🙈' : '👁' }}
+          </span>
         </div>
 
         <p v-if="errorMessage" class="text-red-500 text-sm mb-4">{{ errorMessage }}</p>
 
         <div class="flex items-center justify-between">
           <button
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center justify-center"
               type="submit"
+              :disabled="loading"
           >
-            Login
+            <span v-if="loading" class="animate-spin border-4 border-white border-t-transparent rounded-full w-5 h-5 mr-2"></span>
+            {{ loading ? "Logging in..." : "Login" }}
           </button>
-          <a
-              href="/signup"
-              class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-          >
+
+          <!-- Signup Link -->
+          <router-link to="/signup" class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
             Need an account? Sign Up
-          </a>
+          </router-link>
         </div>
       </form>
     </div>
@@ -62,18 +67,29 @@ export default {
         email: "",
         password: "",
       },
+      loading: false,
       errorMessage: "",
+      showPassword: false, // Toggle password visibility
     };
   },
   methods: {
     async handleLogin() {
+      this.loading = true;
+      this.errorMessage = "";
+
       try {
         const response = await login(this.form.email, this.form.password);
-        console.log("Login successful:", response);
 
-        this.$router.push("/"); // Redirect after successful login
+        // Store token (Assuming API response has 'token')
+        if (response.token) {
+          localStorage.setItem("token", response.token);
+        }
+
+        this.$router.push("/"); // Redirect after login
       } catch (error) {
-        this.errorMessage = error.message || "Login failed!";
+        this.errorMessage = error.response?.data?.message || "Invalid email or password.";
+      } finally {
+        this.loading = false;
       }
     },
   },

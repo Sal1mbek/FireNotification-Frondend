@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useAuthStore } from "@/store/authStore..js";
 
 const API_URL = "https://localhost:8080/api/user/api/users"; // Adjust based on your backend route
 
@@ -11,6 +12,9 @@ export async function login(email, password) {
 
         if (response.data.token) {
             localStorage.setItem("token", response.data.token); // Store JWT token
+
+            const authStore = useAuthStore();
+            authStore.login(response.data.token);
         }
         return response.data;
     } catch (error) {
@@ -28,7 +32,6 @@ export async function register(username, email, password) {
         console.log(response)
         return response.data;
     } catch (error) {
-        console.log(error)
         throw error.response ? error.response.data : error;
     }
 }
