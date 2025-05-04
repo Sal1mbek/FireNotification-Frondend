@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-gray-900 text-white">
     <div class="container mx-auto px-5 py-5">
       <!-- Title -->
-      <h1 class="text-3xl font-bold mb-6 text-gray-200">🔥 Fire Incidents</h1>
+      <h1 class="text-3xl font-bold mb-6 text-gray-200"> Fire Incidents</h1>
 
       <!-- Date Picker -->
       <div class="flex items-center space-x-4 mb-6">

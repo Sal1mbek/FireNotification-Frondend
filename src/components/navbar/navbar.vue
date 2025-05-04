@@ -18,6 +18,16 @@
           </router-link>
         </li>
 
+        <li>
+          <router-link
+              to="/about"
+              class="text-gray-300 hover:text-white px-4 py-2 rounded transition duration-200"
+              active-class="text-blue-400"
+          >
+            About us
+          </router-link>
+        </li>
+
         <li v-if="isAuthenticated">
           <router-link
               to="/dashboard"

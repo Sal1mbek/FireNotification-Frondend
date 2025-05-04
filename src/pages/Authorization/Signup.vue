@@ -18,6 +18,20 @@
         </div>
 
         <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="number">
+            Number
+          </label>
+          <input
+              v-model="form.number"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="number"
+              type="number"
+              placeholder="Enter your phone number"
+              required
+          />
+        </div>
+
+        <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
             Email
           </label>
@@ -89,6 +103,7 @@ export default {
     return {
       form: {
         username: "",
+        number: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -105,7 +120,7 @@ export default {
       }
 
       try {
-        const response = await register(this.form.username, this.form.email, this.form.password);
+        const response = await register(this.form.username, this.form.number, this.form.email, this.form.password);
         this.successMessage = "Registration successful! Redirecting...";
         this.errorMessage = "";
         console.log("Sign-up successful:", response);

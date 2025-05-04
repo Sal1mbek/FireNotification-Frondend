@@ -7,9 +7,7 @@
     <section class="bg-gray-100 py-10 px-6 text-center">
       <h2 class="text-2xl font-bold text-gray-800">About Us</h2>
       <p class="mt-3 text-gray-600 max-w-2xl mx-auto">
-        FireAlert System is designed to provide real-time fire alerts and safe evacuation routes
-        for the residents of Kazakhstan. Users can report fires, receive emergency notifications,
-        and view incidents on the map.
+        FireAlert System is designed to provide real-time fire alerts.
       </p>
     </section>
 
