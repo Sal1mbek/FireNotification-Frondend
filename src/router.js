@@ -12,9 +12,9 @@ const routes = [
     { path: '/', component: Home },
     { path: '/login', component: Login, meta: { requiresAuth: false } },
     { path: '/signup', component: Signup, meta: { requiresAuth: false } },
-    { path: '/profile', component: Profile, meta: { requiresAuth: false } },
-    {path: '/report', component: CreateReport, meta: { requiresAuth: false }},
-    { path: '/dashboard', component: Dashboard, meta: { requiresAuth: false } }
+    { path: '/profile', component: Profile, meta: { requiresAuth: true } },
+    {path: '/report', component: CreateReport, meta: { requiresAuth: true }},
+    { path: '/dashboard', component: Dashboard, meta: { requiresAuth: true } }
 ]
 const router = createRouter({
     history: createWebHistory(),
