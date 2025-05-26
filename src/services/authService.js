@@ -22,12 +22,13 @@ export async function login(email, password) {
     }
 }
 
-export async function register(username, email, password) {
+export async function register(username, email, password, phoneNumber) {
     try {
         const response = await axios.post(`${API_URL}/register`, {
             username,
             email,
             password,
+            phoneNumber
         });
         console.log(response)
         return response.data;

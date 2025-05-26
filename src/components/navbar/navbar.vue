@@ -8,15 +8,7 @@
         </div>
 
         <!-- Desktop Navigation -->
-        <ul class="hidden md:flex space-x-6 items-center">
-          <li v-if="isAuthenticated">
-            <router-link to="/dashboard"
-              class="text-gray-300 hover:text-white px-4 py-2 rounded transition duration-200"
-              active-class="text-blue-400">
-              Fire Cards
-            </router-link>
-          </li>
-
+        <ul class="md:flex space-x-6 items-center">
           <li v-if="!isAuthenticated">
             <router-link to="/login"
               class="underline text-gray-300 hover:text-white px-4 py-2 rounded transition duration-200"
@@ -27,45 +19,6 @@
 
           <li v-if="isAuthenticated">
             <button @click="logout" class="text-gray-300 hover:text-red-400 px-4 py-2 rounded transition duration-200">
-              Logout
-            </button>
-          </li>
-        </ul>
-
-        <!-- Mobile Menu Button -->
-        <button @click="toggleMenu" class="md:hidden text-white focus:outline-none">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-          </svg>
-        </button>
-      </div>
-
-      <!-- Mobile Menu -->
-      <div v-if="menuOpen" class="md:hidden bg-gray-800 py-3 px-5">
-        <ul class="space-y-3">
-          <li>
-            <router-link to="/" class="block text-gray-300 hover:text-white py-2" active-class="text-blue-400"
-              @click="toggleMenu">
-              Home
-            </router-link>
-          </li>
-
-          <li v-if="isAuthenticated">
-            <router-link to="/dashboard" class="block text-gray-300 hover:text-white py-2" active-class="text-blue-400"
-              @click="toggleMenu">
-              Fire Cards
-            </router-link>
-          </li>
-
-          <li v-if="!isAuthenticated">
-            <router-link to="/login" class="block text-gray-300 hover:text-white py-2" active-class="text-blue-400"
-              @click="toggleMenu">
-              Login
-            </router-link>
-          </li>
-
-          <li v-if="isAuthenticated">
-            <button @click="logout" class="block text-gray-300 hover:text-red-400 py-2 w-full text-left">
               Logout
             </button>
           </li>
@@ -83,7 +36,7 @@
         </svg>
         <div v-show="isMenuOpen">Home</div>
       </div>
-      <div @click="navigateTo('/profile')" class="flex items-center space-x-2 cursor-pointer">
+      <div v-if="isAuthenticated" @click="navigateTo('/profile')" class="flex items-center space-x-2 cursor-pointer">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-7">
           <path fill-rule="evenodd"
             d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"

@@ -24,6 +24,15 @@
           id="email" type="email" placeholder="Enter your email" required />
       </div>
 
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+          Phone Number
+        </label>
+        <input v-model="form.phoneNumber"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
+          id="phone" type="phone" placeholder="Enter your phone number" required />
+      </div>
+
       <div class="mb-6">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
           Password
@@ -72,6 +81,7 @@ export default {
         email: "",
         password: "",
         confirmPassword: "",
+        phoneNumber: "",
       },
       errorMessage: "",
       successMessage: "",
@@ -91,12 +101,19 @@ export default {
         this.errorMessage = '';
 
       try {
-        const response = await register(this.form.username, this.form.email, this.form.password);
+        const response = await register(this.form.username, this.form.email, this.form.password, this.form.phoneNumber);
         this.successMessage = "Registration successful! Redirecting...";
         this.errorMessage = "";
-        console.log("Sign-up successful:", response);
-
-        setTimeout(() => this.$router.push("/login"), 2000); // Redirect after success
+        if (response.token) {
+          localStorage.setItem("token", response.token);
+        }
+        if(response.userId){
+          localStorage.setItem("userId", response.userId);
+        } else {
+          throw new Error("User ID not found in response.");
+        }
+        setTimeout(() => this.$router.push("/"), 2000);
+        // Redirect after success
       } catch (error) {
         this.errorMessage = error.message || "Sign-up failed!";
       }
