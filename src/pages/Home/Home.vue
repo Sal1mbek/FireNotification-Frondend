@@ -1,10 +1,10 @@
 <template>
-  <div class="h-full flex flex-col">
+  <div class="h-full flex flex-col pl-[52px]">
     <div style="
     background-image: url('https://cdnn1.img.sputnik.tj/img/103106/14/1031061482_0:100:1920:1180_1920x0_80_0_0_ee8e526dcd441226b4ed608e2c6e6e58.jpg');
     " class="h-60 flex flex-col bg-cover bg-center bg-no-repeat">
       <div class="grow flex flex-col items-center justify-end">
-        <h1 class="text-white text-3xl font-bold text-center ">🔥 FireAlert System</h1>
+        <h1 class="text-white text-5xl font-bold text-center ">🔥 FireAlert System</h1>
       </div>
       <div style="mask-image: linear-gradient(to bottom, transparent, black);
      -webkit-mask-image: linear-gradient(to bottom, transparent, black);" class="bg-gray-100 h-24 w-full"></div>
@@ -12,7 +12,7 @@
     <!-- Header -->
 
     <!-- About Us -->
-    <div class="grid md:grid-cols-2 justify-between pt-6 h-96">
+    <div class="grid md:grid-cols-2 justify-between px-8 pt-6 h-96">
       <section class="flex flex-col bg-gray-100 px-6 justify-center items-center">
         <h2 class="w-3/5 text-2xl text-center font-bold text-gray-800">About Us</h2>
         <p class="w-3/5 mt-3 text-gray-600 max-w-2xl mx-auto">

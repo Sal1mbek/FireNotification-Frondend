@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <div class="relative">
-            <input :type="showPassword ? 'text' : 'password'" @input="internalValue = $event.target.value" required
+            <input :type="showPassword ? 'text' : 'password'" @input="inputPassword($event.target.value)" required
                 id="password" placeholder="Enter your password"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" />
             <button type="button" class="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700 text-sm"
@@ -27,8 +27,6 @@
 </template>
 
 <script>
-import { computed, ref, watch } from 'vue';
-
 export default {
     name: 'PasswordInput',
     props: {
@@ -88,6 +86,19 @@ export default {
         },
     },
     methods: {
+        inputPassword(value) {
+            console.log('Input value:', value);
+            this.internalValue = value;
+            if (this.passwordStrength === 'strong') {
+                console.log('Password is strong:', value);
+                this.$emit('update:modelValue', value)
+            }
+            else {
+                console.log('Password is not strong enough:', "".length);
+                this.$emit('update:modelValue', "");
+            }
+            this.passwordStrengthClass = this.passwordStrengthClassChange;
+        },
         toggleVisibility() {
             this.showPassword = !this.showPassword;
         },
@@ -95,17 +106,6 @@ export default {
     watch: {
         modelValue(newVal) {
             this.internalValue = newVal;
-        },
-        internalValue(newVal) {
-            if (this.passwordStrengthClass === 'text-green-600') {
-                console.log('Password is strong:', newVal);
-                this.$emit('update:modelValue', newVal)
-            }
-            else {
-                console.log('Password is not strong enough:', "".length);
-                this.$emit('update:modelValue', "");
-            }
-            this.passwordStrengthClass = this.passwordStrengthClassChange;
         },
     },
 

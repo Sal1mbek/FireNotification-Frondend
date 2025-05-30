@@ -21,10 +21,10 @@
         <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
       </div>
       <!-- Fire Cards Grid -->
-      <MapForFire :fireCoordinate="fireCoordinate.value" v-if="!loading && totalFireCount.length > 0" :data="totalFireCount"/>
-      <div v-if="!loading && currentFirePage.length > 0" class="grid pt-6 px-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div v-for="fire in currentFirePage" :key="`${fire.address + fire.time_fire + fire.latitude}`" class="border border-gray-700 rounded-lg shadow-md">
-          <div @click="navigateToFire([fire.latitude, fire.longitude])" class="p-1 text-black justify-between flex flex-col h-full cursor-pointer">
+      <MapForFire :fireCoordinate="fireCoordinate" v-if="!loading && fireData.length > 0" :data="fireData"/>
+      <div v-if="!loading && fireData && fireData.length > 0" class="grid pt-6 px-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div v-for="fire in fireData[currentPage - 1] || []" :key="`${fire.address + fire.time_fire + fire.latitude}`" class="border border-gray-700 rounded-lg shadow-md">
+          <div @click="navigateToFire(fire.latitude, fire.longitude)" class="p-1 text-black justify-between flex flex-col h-full cursor-pointer">
             <p class="mb-2 text-md font-bold tracking-tight">
               📍 {{ fire.address }}
             </p>
@@ -62,47 +62,57 @@
   </div>
 </template>
 
-<script setup>
+<script>
 import { getFireData } from "@/services/fireService";
-import { ref, computed, onMounted } from "vue";
-import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import MapForFire from "@/components/Dashboard/MapForFire.vue";
-    const selectedDate = ref(new Date().toISOString().split("T")[0]);
-    const fireData = ref([]);
-    const loading = ref(false);
-    const currentPage = ref(1);
-    const fireCoordinate = ref([]);
-    function navigateToFire(lat, lng) {
-  fireCoordinate.value = [lat, lng];
-}
-    const totalPages = computed(() => Math.ceil(fireData.value.length));
-    const currentFirePage = computed(() => fireData.value[currentPage.value - 1] || []);
-    const totalFireCount = computed(() => fireData.value || []);
-    const fetchFireData = async () => {
-      fireData.value = [];
-      loading.value = true;
-      try {
-        const data = await getFireData(selectedDate.value);
-        fireData.value = data;
-        console.log("Fetched fire data:", fireData);
+export default {
+    name: "Dashboard",
+    components: {
+        MapForFire,
+    },
+    data() {
+      return {
+        selectedDate: new Date().toISOString().split("T")[0],
+        fireData: [],
+        loading: false,
+        currentPage: 1,
+        fireCoordinate: [],
+        totalPages: 0,
+      };
+    },
+    methods: {
+      navigateToFire(lat, lng) {
+        this.fireCoordinate = [lat, lng];
+        console.log(`Navigating to fire at coordinates: ${lat}, ${lng}`);
         
-        currentPage.value = 1;
-      } catch (error) {
-        console.error("Failed to fetch fire data", error);
-      } finally {
-        loading.value = false;
+      },
+      async fetchFireData () {
+        this.fireData = [];
+        this.loading = true;
+        try {
+          await getFireData(this.selectedDate).then(data=> {
+            this.fireData = data;
+            this.totalPages = Math.ceil(data.length)
+            this.currentPage = 1;
+          });
+        } catch (error) {
+          console.error("Failed to fetch fire data", error);
+        } finally {
+          this.loading = false;
+        }
+      },
+      nextPage () {
+        if (this.currentPage < this.totalPages) this.currentPage++;
+      },
+      prevPage () {
+        if (this.currentPage > 1) this.currentPage--;
       }
-    };
-    const nextPage = () => {
-      if (currentPage.value < totalPages.value) currentPage.value++;
-    };
-
-    const prevPage = () => {
-      if (currentPage.value > 1) currentPage.value--;
-    };
-
-    onMounted(fetchFireData);
+    },
+    mounted() {
+      this.fetchFireData();
+    },
+  }
 </script>
 
 <style scoped>

@@ -20,24 +20,38 @@ const props = defineProps({
 let map = null;
 let routingControl = null;
 
-async function findNearestHospital(lat, lon) {
-  const delta = 0.1;
-  const viewbox = `${lon - delta},${lat - delta},${lon + delta},${lat + delta}`;
-  const url = `https://nominatim.openstreetmap.org/search?format=json&q=hospital&limit=1&viewbox=${viewbox}&bounded=1`;
-  try {
-    const res = await fetch(url, { headers: { 'Accept-Language': 'en' } });
-    const data = await res.json();
-    if (data.length > 0) {
-      console.log('Nearest hospital found:', data[0]);
-      return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
-    } else {
-      console.log('No hospital found');
+async function findNearestHospitalWithExpansion(lat, lon, initialDelta = 0.01, maxDelta = 1, step = 0.01) {
+  let delta = initialDelta;
+
+  while (delta <= maxDelta) {
+    const viewbox = `${lon - delta},${lat - delta},${lon + delta},${lat + delta}`;
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=hospital&limit=1&viewbox=${viewbox}&bounded=1`;
+
+    try {
+      const res = await fetch(url, {
+        headers: {
+          'Accept-Language': 'en',
+          'User-Agent': 'your-app-name (your@email.com)' // Замените на ваш User-Agent
+        }
+      });
+      const data = await res.json();
+
+      if (data.length > 0) {
+        return {
+          coords: [parseFloat(data[0].lat), parseFloat(data[0].lon)],
+          name: data[0].display_name || 'Ближайшая больница'
+        };
+      }
+    } catch (e) {
+      console.error("Error fetching hospital data:", e);
       return null;
     }
-  } catch (e) {
-    console.error("Error fetching hospital data:", e);
-    return null;
+
+    delta += step;
   }
+
+  console.warn('No hospital found within max delta');
+  return null;
 }
 
 async function setupMapAndRoute(start) {
@@ -45,15 +59,16 @@ async function setupMapAndRoute(start) {
     map.remove();
     map = null;
   }
+
   map = L.map('map').setView(start, 13);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
-  const hospital = await findNearestHospital(start[0], start[1]);
-  if (!hospital) {
-    alert("Nearest hospital not found");
+  const hospitalData = await findNearestHospitalWithExpansion(start[0], start[1]);
+  if (!hospitalData) {
+    alert("Nearest hospital not found within search area");
     return;
   }
 
@@ -64,14 +79,15 @@ async function setupMapAndRoute(start) {
   routingControl = L.Routing.control({
     waypoints: [
       L.latLng(start[0], start[1]),
-      L.latLng(hospital[0], hospital[1])
+      L.latLng(hospitalData.coords[0], hospitalData.coords[1])
     ],
     routeWhileDragging: false,
     draggableWaypoints: false,
     addWaypoints: false,
-    show: false,
     fitSelectedRoutes: true,
-    createMarker: (i, wp) => L.marker(wp.latLng)
+    createMarker: (i, wp) => {
+      return L.marker(wp.latLng).bindPopup(i === 0 ? 'Вы здесь' : hospitalData.name);
+    }
   }).addTo(map);
 }
 

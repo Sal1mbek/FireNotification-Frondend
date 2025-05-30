@@ -14,7 +14,7 @@ export async function login(email, password) {
             localStorage.setItem("token", response.data.token); // Store JWT token
 
             const authStore = useAuthStore();
-            authStore.login(response.data.token);
+            authStore.login(response.data.token, response.data.role);
         }
         return response.data;
     } catch (error) {
@@ -37,8 +37,36 @@ export async function register(username, email, password, phoneNumber) {
     }
 }
 
-
 export function getAuthHeader() {
     const token = localStorage.getItem("token");
     return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
+export async function sendVerifyEmail(email){
+    try {
+        const response = await axios.post(`${API_URL}/sendCodeEmail`, { email });
+        return response.data;
+    } catch (error) {
+        throw error.response ? error.response.data : error;
+    }
+}
+
+export async function checkVerifyEmail(email, code) {
+    try {
+        const response = await axios.post(`${API_URL}/verifyEmail`, { email, code });
+        return response.data;
+    } catch (error) {
+        throw error.response ? error.response.data : error;
+    }
+}
+
+export async function getProfile() {
+    try {
+        const response = await axios.get(`${API_URL}/getProfile`, {params: {userId: localStorage.getItem('userId')}}, {
+            headers: getAuthHeader(),
+        });
+        return response.data;
+    } catch (error) {
+        throw error.response ? error.response.data : error;
+    }
 }
