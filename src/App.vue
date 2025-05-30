@@ -4,7 +4,7 @@ import Navbar from "@/components/navbar/navbar.vue";
 
 <template>
   <div class="app">
-    <div class="w-full container">
+    <div class="w-full">
       <div class="flex flex-col">
       <Navbar />
     </div>
