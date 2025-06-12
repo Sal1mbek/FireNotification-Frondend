@@ -17,7 +17,7 @@
         <h2 class="w-3/5 text-2xl text-center font-bold text-gray-800">About Us</h2>
         <p class="w-3/5 mt-3 text-gray-600 max-w-2xl mx-auto">
           FireAlert System is designed to provide real-time fire alerts and safe evacuation routes
-          for the residents of Astana. Users can report fires, receive emergency notifications,
+          for the residents of Kazakhstan. Users can report fires, receive emergency notifications,
           and view incidents on the map.
         </p>
       </section>
@@ -50,7 +50,7 @@
     <section class="bg-gray-100 py-10 px-6 text-center">
       <h2 class="text-2xl font-bold text-gray-800">Contact Us</h2>
       <p class="mt-3 text-gray-600">For support, reach out to us:</p>
-      <p class="text-gray-700 font-medium mt-2">📧 Email: 221000@astanait.edu.kz <br>221000@astanait.edu.kz </p>
+      <p class="text-gray-700 font-medium mt-2">📧 Email: 221000@astanait.edu.kz <br>220790@astanait.edu.kz </p>
       <p class="text-gray-700 font-medium">📞 Phone: +7 (776) 248-2761</p>
     </section>
 
@@ -87,7 +87,7 @@ export default {
       },
       {
         title: 'Receive Alerts',
-        description: 'Nearby users receive SMS alerts with evacuation routes.',
+        description: 'Nearby users receive SMS alerts.',
         backgroundImage: 'https://static.tildacdn.com/tild3935-6437-4164-a364-613963633634/push_1_1.png',
         link: '/installApp'
       },
