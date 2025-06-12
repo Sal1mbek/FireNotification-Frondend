@@ -1,6 +1,6 @@
 <template>
     <div style="font-family: 'Inter', sans-serif" class="h-full w-full bg-white flex flex-col pl-[52px] lg:pl-[72px] md:pr-[52px] pt-10">
-        <div class="container mx-auto md:px-5 px-2">
+        <div class="flex md:px-5 px-2">
             <div class="text-center mb-8 flex justify-between">
                 <h1 class="text-3xl font-bold text-gray-800">Create Report</h1>
             </div>

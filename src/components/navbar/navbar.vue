@@ -1,7 +1,7 @@
 <template>
   <div class="w-full mx-auto" >
     <nav class="bg-gray-900 shadow-md">
-      <div class="container mx-auto px-5 py-3 flex justify-between items-center">
+      <div class="mx-auto px-5 py-3 flex justify-between items-center">
         <!-- Logo -->
         <div class="text-white text-xl font-bold tracking-wide">
           🔥 FireAlert System

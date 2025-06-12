@@ -1,5 +1,6 @@
 <script setup>
 import Navbar from "@/components/navbar/navbar.vue";
+import SupportCharts from "./pages/SupportChats/SupportCharts.vue";
 </script>
 
 <template>
@@ -11,6 +12,7 @@ import Navbar from "@/components/navbar/navbar.vue";
       <div class="flex-grow bg-gray-100">
         <router-view></router-view>
       </div></div>
+    <SupportCharts/>
   </div>
 </template>
 

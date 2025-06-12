@@ -89,7 +89,7 @@ export default {
         title: 'Receive Alerts',
         description: 'Nearby users receive SMS alerts with evacuation routes.',
         backgroundImage: 'https://static.tildacdn.com/tild3935-6437-4164-a364-613963633634/push_1_1.png',
-        link: '/'
+        link: '/installApp'
       },
       {
         title: 'View Fire Incidents',
